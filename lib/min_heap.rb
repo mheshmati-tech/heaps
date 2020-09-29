@@ -13,8 +13,8 @@ class MinHeap
   end
 
   # This method adds a HeapNode instance to the heap
-  # Time Complexity: ?
-  # Space Complexity: ?
+  # Time Complexity: O(1)
+  # Space Complexity: O(log n)
   def add(key, value = key)
     @store << HeapNode.new(key, value)
 
@@ -23,8 +23,8 @@ class MinHeap
 
   # This method removes and returns an element from the heap
   #   maintaining the heap structure
-  # Time Complexity: ?
-  # Space Complexity: ?
+  # Time Complexity: O(1)
+  # Space Complexity: O(log n)
   def remove()
     if @store.empty?
       return nil 
@@ -54,8 +54,8 @@ class MinHeap
   end
 
   # This method returns true if the heap is empty
-  # Time complexity: ?
-  # Space complexity: ?
+  # Time complexity: O(1)
+  # Space complexity: O(1)
   def empty?
     @store.empty?
   end
@@ -65,8 +65,8 @@ class MinHeap
   # This helper method takes an index and
   #  moves it up the heap, if it is less than it's parent node.
   #  It could be **very** helpful for the add method.
-  # Time complexity: ?
-  # Space complexity: ?
+  # Time complexity: O(1)
+  # Space complexity: O(log n)
   def heap_up(index)
     parent = (index - 1) / 2
     return if index == 0
@@ -74,7 +74,7 @@ class MinHeap
     if @store[parent].key > @store[index].key
       swap(parent, index)
       heap_up(parent)
-    else #@store[parent].key < @store[index].key
+    else #if @store[parent].key < @store[index].key
       return
     end
   end
@@ -85,16 +85,20 @@ class MinHeap
   def heap_down(index)
     right = 2 * index + 2
     left = 2 * index + 1
-    return if @store[right].nil? || @store[left].nil?
+    return if left >= @store.length #return if no child exists 
 
+    #initilize smaller in case right index doesn't exist 
+    smaller = left 
     #determine which is smaller 
-    smaller = @store[left].key > @store[right].key ? right : left
-    
+    if @store[right]
+      smaller = @store[left].key > @store[right].key ? right : left
+    end 
+
     #swap 
     if @store[smaller].key < @store[index].key
       swap(smaller, index)
       heap_down(smaller)
-    else
+    else #if @store[smaller].key > @store[index].key
       return 
     end
   end
